@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WiFi Monitor</string>
+    <string name="scan_network">Scan Network</string>
+    <string name="devices_online">devices online</string>
+    <string name="monitoring_active">Monitoring Active</string>
+    <string name="new_device_alert">New device detected on your network</string>
+    <string name="channel_monitor">WiFi Monitor</string>
+    <string name="channel_alerts">Network Alerts</string>
+</resources>
