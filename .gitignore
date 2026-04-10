@@ -1,0 +1,20 @@
+# Android Studio / Gradle
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# Android Build Outputs
+app/build/
+*.apk
+*.aar
+
+# Sensitive Info / Keys
+*.keystore
+*.jks
+!debug.keystore
+
+# Captured system logs
+*.log
