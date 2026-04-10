@@ -26,7 +26,7 @@ class Converters {
 }
 
 @Database(
-    entities = [NetworkDevice::class, AlertRecord::class, TrafficRecord::class, AlertRule::class],
+    entities = [NetworkDevice::class, AlertRecord::class, TrafficRecord::class, AlertRule::class, DeviceHistory::class],
     version = 8,
     exportSchema = false
 )

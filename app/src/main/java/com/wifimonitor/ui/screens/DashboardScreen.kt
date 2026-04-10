@@ -448,7 +448,6 @@ private fun NetworkHeroCard(state: com.wifimonitor.viewmodel.DashboardUiState, o
                             }
                         }
                     }
-                }
             }
         }
     }
