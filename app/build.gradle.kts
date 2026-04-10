@@ -93,5 +93,8 @@ dependencies {
     // Security (encrypted preferences)
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
+    // Image Loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     debugImplementation(libs.androidx.ui.tooling)
 }

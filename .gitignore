@@ -1,20 +1,24 @@
-# Android Studio / Gradle
-.gradle/
-build/
-local.properties
-.idea/
+# Android IntelliJ
 *.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
 .DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+/google-services.json
+/app/google-services.json
 
-# Android Build Outputs
-app/build/
+# Specialized APK ignore
 *.apk
-*.aar
-
-# Sensitive Info / Keys
-*.keystore
-*.jks
-!debug.keystore
-
-# Captured system logs
-*.log
+*.ap_
+*.dex
+*.class

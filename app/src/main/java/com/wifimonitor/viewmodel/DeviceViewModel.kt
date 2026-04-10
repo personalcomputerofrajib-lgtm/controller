@@ -16,7 +16,8 @@ data class DeviceUiState(
     val editingNickname: Boolean = false,
     val nicknameInput: String = "",
     val isPaused: Boolean = false,
-    val rules: List<com.wifimonitor.rules.RuleEngine.Rule> = emptyList()
+    val rules: List<com.wifimonitor.rules.RuleEngine.Rule> = emptyList(),
+    val topDomains: List<DomainCount> = emptyList()
 )
 
 @HiltViewModel
@@ -41,6 +42,12 @@ class DeviceViewModel @Inject constructor(
             repository.getDeviceTraffic(mac).collect { records ->
                 _uiState.update { it.copy(trafficRecords = records) }
             }
+        }
+        viewModelScope.launch {
+            repository.getTopDomainsForDevice(mac, System.currentTimeMillis() - 24 * 60 * 60 * 1000L)
+                .collect { domains ->
+                    _uiState.update { it.copy(topDomains = domains) }
+                }
         }
         observeRules(mac)
     }

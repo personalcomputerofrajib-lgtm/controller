@@ -89,7 +89,7 @@ class DnsServer @Inject constructor(
             logQuery(sourceMac, domain, true)
             
             // ── Principle #11: Redirect to Walled Garden ──
-            val localIp = interfaceMonitor.state.value.activeInterface?.ip
+            val localIp = interfaceMonitor.state.value.activeInterface?.ipAddress
             if (localIp != null) {
                 sendARecordResponse(packet, localIp)
             } else {

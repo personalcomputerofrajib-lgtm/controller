@@ -651,6 +651,102 @@ fun ErrorCard(message: String, onDismiss: () -> Unit) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// App Drawer (Navigation)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun AppDrawer(
+    currentRoute: String,
+    onNavigate: (String) -> Unit
+) {
+    ModalDrawerSheet(
+        containerColor = DeepNavy,
+        drawerShape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxHeight().padding(24.dp)) {
+            // Header
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier.size(40.dp).background(CyberTeal.copy(0.15f), RoundedCornerShape(10.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Wifi, null, tint = CyberTeal)
+                }
+                Spacer(Modifier.width(12.dp))
+                Text("SENTINEL", style = MaterialTheme.typography.titleLarge, color = TextPrimary, fontWeight = FontWeight.Black)
+            }
+            
+            Spacer(Modifier.height(40.dp))
+            
+            // Navigation Items
+            val items = listOf(
+                Triple("Dashboard", Screen.Dashboard.route, Icons.Default.Dashboard),
+                Triple("Tactical Map", Screen.TacticalMap.route, Icons.Default.Radar),
+                Triple("Live Traffic", Screen.Traffic.route, Icons.Default.NetworkCheck),
+                Triple("Alert Monitor", Screen.Alerts.route, Icons.Default.Notifications),
+                Triple("Network Timeline", "timeline", Icons.Default.History),
+                Triple("Rules & Control", Screen.Settings.route, Icons.Default.Settings)
+            )
+            
+            items.forEach { (label, route, icon) ->
+                val selected = currentRoute == route
+                NavigationDrawerItem(
+                    label = { Text(label, fontWeight = if(selected) FontWeight.Bold else FontWeight.Normal) },
+                    selected = selected,
+                    onClick = { onNavigate(route) },
+                    icon = { Icon(icon, null) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        unselectedContainerColor = Color.Transparent,
+                        selectedContainerColor = CyberTeal.copy(0.1f),
+                        selectedIconColor = CyberTeal,
+                        selectedTextColor = CyberTeal,
+                        unselectedIconColor = TextSecondary,
+                        unselectedTextColor = TextSecondary
+                    ),
+                    modifier = Modifier.padding(vertical = 4.dp).clip(RoundedCornerShape(12.dp)),
+                    shape = RoundedCornerShape(12.dp)
+                )
+            }
+            
+            Spacer(Modifier.weight(1f))
+            
+            // Footer
+            Text("Precision-Scale v1.0.4", style = MaterialTheme.typography.labelSmall, color = TextMuted)
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Usage Indicator (Gauge/Meter for detail screen)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun UsageIndicator(
+    label: String,
+    value: Float,
+    unit: String,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(label, style = MaterialTheme.typography.labelMedium, color = TextSecondary)
+            Text("${String.format("%.1f", value)} $unit", style = MaterialTheme.typography.labelMedium, color = color, fontWeight = FontWeight.Bold)
+        }
+        Spacer(Modifier.height(8.dp))
+        Box(modifier = Modifier.fillMaxWidth().height(6.dp).background(NavyBorder, RoundedCornerShape(3.dp))) {
+            val progress = (value / 50f).coerceIn(0f, 1f) // Baseline 50 Mbps max for scale
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .fillMaxHeight()
+                    .background(color, RoundedCornerShape(3.dp))
+            )
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 

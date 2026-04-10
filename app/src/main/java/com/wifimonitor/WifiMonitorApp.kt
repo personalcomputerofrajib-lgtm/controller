@@ -1,13 +1,24 @@
 package com.wifimonitor
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
-class WifiMonitorApp : Application() {
+class WifiMonitorApp : Application(), Configuration.Provider {
     
-    @javax.inject.Inject
+    @Inject
     lateinit var diagnostics: com.wifimonitor.analyzer.DiagnosticLogger
+    
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
     
     override fun onCreate() {
         super.onCreate()

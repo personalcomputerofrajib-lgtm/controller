@@ -158,7 +158,14 @@ fun DashboardScreen(
                 }
 
                 // 1. Hero Card
-                item { NetworkHeroCard(state = state, onScanClick = { viewModel.scanNow() }) }
+                item { 
+                    NetworkHeroCard(
+                        state = state, 
+                        onScanClick = { viewModel.scanNow() },
+                        onNavigate = { navController.navigate(it) },
+                        onWhyClick = { viewModel.selectFault(it) }
+                    ) 
+                }
                 
                 // ── Live Bandwidth HUD ──
                 item { LiveBandwidthHud(totalMbps = state.totalMbps) }
@@ -316,7 +323,12 @@ fun DashboardScreen(
 // ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun NetworkHeroCard(state: com.wifimonitor.viewmodel.DashboardUiState, onScanClick: () -> Unit) {
+private fun NetworkHeroCard(
+    state: com.wifimonitor.viewmodel.DashboardUiState, 
+    onScanClick: () -> Unit,
+    onNavigate: (String) -> Unit,
+    onFaultSelected: (com.wifimonitor.data.NetworkFault) -> Unit
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "hero")
     val radarRotation by infiniteTransition.animateFloat(
         initialValue = 0f, targetValue = 360f,
@@ -401,8 +413,8 @@ private fun NetworkHeroCard(state: com.wifimonitor.viewmodel.DashboardUiState, o
                                     Text("Scan", color = DeepNavy, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                                 }
                                 
-                                OutlinedButton(
-                                    onClick = { navController.navigate(Screen.TacticalMap.route) },
+                                 OutlinedButton(
+                                    onClick = { onNavigate(Screen.TacticalMap.route) },
                                     border = BorderStroke(1.dp, CyberTeal),
                                     shape = RoundedCornerShape(10.dp),
                                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
@@ -426,7 +438,7 @@ private fun NetworkHeroCard(state: com.wifimonitor.viewmodel.DashboardUiState, o
                     Spacer(Modifier.height(16.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         TextButton(onClick = { 
-                            viewModel.selectFault(com.wifimonitor.data.NetworkFault(
+                            onFaultSelected(com.wifimonitor.data.NetworkFault(
                                 id = "network_health_audit",
                                 type = com.wifimonitor.data.FaultType.CONGESTION,
                                 title = "Full Network Integrity Audit",

@@ -146,5 +146,6 @@ class SecureCredentialStore @Inject constructor(
         private const val KEY_MANAGED_MODE = "managed_mode"
         private const val KEY_SCAN_INTERVAL = "scan_interval"
         private const val KEY_GATEWAY_MODE = "gateway_mode"
+        private const val KEY_EFFICIENCY_MODE = "efficiency_mode"
     }
 }

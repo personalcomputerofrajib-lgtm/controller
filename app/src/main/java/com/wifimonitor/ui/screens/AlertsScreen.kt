@@ -166,4 +166,6 @@ private fun alertVisuals(type: AlertType): Triple<androidx.compose.ui.graphics.v
         AlertType.STABILITY_DROP -> Triple(Icons.Default.WifiTetheringOff, WarningAmber, "Stability Drop")
         AlertType.PATTERN_CHANGE -> Triple(Icons.Default.Update, AccentBlue, "Pattern Change")
         AlertType.HIDDEN_CAMERA_FOUND -> Triple(Icons.Default.CameraAlt, AlertRed, "Hidden Camera Found")
+        AlertType.SUSPICIOUS_BEHAVIOR -> Triple(Icons.Default.Security, WarningAmber, "Suspicious Behavior")
+        AlertType.PORT_CHANGE -> Triple(Icons.Default.SettingsEthernet, AccentBlue, "Port Configuration Change")
     }

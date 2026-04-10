@@ -74,6 +74,22 @@ fun DeviceDetailScreen(
             return@Scaffold
         }
 
+        val topDomains = state.topDomains
+        val trend = remember(device, state.trafficRecords) {
+            if (state.trafficRecords.isEmpty()) "Limited data available"
+            else {
+                val calendar = Calendar.getInstance()
+                val nocturnal = state.trafficRecords.any { 
+                    calendar.timeInMillis = it.timestamp
+                    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+                    hour in 0..5 
+                }
+                if (nocturnal) "Active Night-time Usage"
+                else if (state.trafficRecords.size > 20) "Frequent Active User"
+                else "Light Occasional Usage"
+            }
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
             contentPadding = PaddingValues(16.dp),
@@ -106,7 +122,6 @@ fun DeviceDetailScreen(
             }
 
             // ── Usage Trends ──
-            val topDomains by viewModel.topDomains.collectAsState(initial = emptyList())
             if (topDomains.isNotEmpty()) {
                 item { TopDomainsCard(topDomains) }
             }
@@ -114,18 +129,6 @@ fun DeviceDetailScreen(
             // Level 12 & 13: Personality Intelligence (Killer #3)
             item { PersonalityCard(device.personality) }
 
-            val trend = remember(device, state.trafficRecords) {
-                if (state.trafficRecords.isEmpty()) "Limited data available"
-                else {
-                    val nocturnal = state.trafficRecords.any { 
-                        val hour = Calendar.getInstance().apply { timeInMillis = it.timestamp }.get(Calendar.HOUR_OF_DAY)
-                        hour in 0..5 
-                    }
-                    if (nocturnal) "Active Night-time Usage"
-                    else if (state.trafficRecords.size > 20) "Frequent Active User"
-                    else "Light Occasional Usage"
-                }
-            }
             item { UsageTrendCard(trend) }
 
             // ── Level 5: Behavioral Scoring ──
@@ -570,8 +573,9 @@ private fun UsageStatsCard(device: NetworkDevice) {
             Text("Data Usage", style = MaterialTheme.typography.titleSmall, color = TextPrimary, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(12.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                UsageIndicator("Download", "1.2 GB", Icons.Default.Download, CyberTeal)
-                UsageIndicator("Upload", "450 MB", Icons.Default.Upload, WarningAmber)
+                UsageIndicator("Download", 1.2f, "GB", CyberTeal, modifier = Modifier.weight(1f))
+                Spacer(Modifier.width(16.dp))
+                UsageIndicator("Upload", 450f, "MB", WarningAmber, modifier = Modifier.weight(1f))
             }
         }
     }
@@ -803,7 +807,7 @@ private fun DnaBadge(dna: String) {
         border = BorderStroke(1.dp, CyberTeal.copy(0.3f))
     ) {
         Row(modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Default.Dna, null, tint = CyberTeal, modifier = Modifier.size(14.dp))
+            Icon(Icons.Default.Science, null, tint = CyberTeal, modifier = Modifier.size(14.dp))
             Spacer(Modifier.width(8.dp))
             Text(dna, style = MaterialTheme.typography.labelSmall, color = CyberTeal, fontWeight = FontWeight.Bold)
         }

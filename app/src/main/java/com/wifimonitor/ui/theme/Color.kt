@@ -9,6 +9,7 @@ val DeepNavy = Color(0xFF0A0E1A)
 val NavyCard = Color(0xFF111827)
 val NavySurface = Color(0xFF1A2236)
 val NavyBorder = Color(0xFF253047)
+val NavyBackground = Color(0xFF0A0E1A) // Mapped to DeepNavy for consistency
 
 // Accent colors
 val AccentBlue = Color(0xFF3B82F6)

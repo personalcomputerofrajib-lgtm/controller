@@ -64,7 +64,7 @@ class PortScanner @Inject constructor() {
         if (openPorts.isNotEmpty()) {
             Log.i(tag, "$ip open ports: $openPorts")
         }
-        return PortScanResult(ip, openPorts)
+        PortScanResult(ip, openPorts)
     }
 
     suspend fun quickScan(ip: String): PortScanResult {

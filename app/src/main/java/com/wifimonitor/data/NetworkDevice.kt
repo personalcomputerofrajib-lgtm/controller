@@ -85,7 +85,13 @@ data class NetworkDevice(
     // Live Traffic (Final Power Tier)
     val downloadRateMbps: Float = 0f,
     val uploadRateMbps: Float = 0f,
-    val currentAppType: String = ""
+    val currentAppType: String = "",
+
+    // Added fields to fix unresolved references
+    val mdnsName: String = "",
+    val topDomains: String = "",
+    val personality: String = "",
+    val isPaused: Boolean = false
 ) {
     val displayName: String
         get() = nickname.ifBlank { hostname.ifBlank { "Unknown (${mac.takeLast(5)})" } }

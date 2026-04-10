@@ -127,8 +127,8 @@ class ProxyServer @Inject constructor(
         val buffer = ByteArray(16384)
         var totalBytes = 0L
         try {
-            var read: Int
-            while (isActive && input.read(buffer).also { read = it } != -1) {
+            var read = 0
+            while (currentCoroutineContext().isActive && input.read(buffer).also { read = it } != -1) {
                 output.write(buffer, 0, read)
                 output.flush()
                 

@@ -23,5 +23,6 @@ data class TrafficRecord(
     val isBlocked: Boolean = false,
     val ruleId: String? = null,
     val category: String = "Unknown",  // Streaming, Gaming, Browsing, IoT
-    val bandwidthBytes: Long = 0L
+    val bandwidthBytes: Long = 0L,
+    val iconUrl: String? = null        // Added to fix unresolved reference
 )

@@ -31,14 +31,15 @@ class IntelligenceEngine @Inject constructor(
         val online = devices.filter { it.status == com.wifimonitor.data.DeviceStatus.ONLINE }
         if (online.isEmpty()) return NetworkPressure(0, "Silent", 0)
 
-        val totalActivity = online.sumOf { 
-            when (it.activityLevel) {
+        val totalActivity = online.sumOf { device ->
+            val score: Int = when (device.activityLevel) {
                 com.wifimonitor.data.ActivityLevel.IDLE -> 5
                 com.wifimonitor.data.ActivityLevel.LOW -> 20
                 com.wifimonitor.data.ActivityLevel.BROWSING -> 50
                 com.wifimonitor.data.ActivityLevel.ACTIVE -> 80
                 com.wifimonitor.data.ActivityLevel.HEAVY -> 100
             }
+            score.toLong()
         } / online.size
 
         val pressureScore = (totalActivity + (online.size * 2)).coerceIn(0, 100)

@@ -85,7 +85,14 @@ class DashboardViewModel @Inject constructor(
                 repository.alerts,
                 repository.unreadAlertCount,
                 repository.scanDelta
-            ) { online, all, traffic, alerts, unread, delta ->
+            ) { onlineRaw, allRaw, trafficRaw, alertsRaw, unreadRaw, deltaRaw ->
+                val online = onlineRaw
+                val all = allRaw
+                val traffic = trafficRaw
+                val alerts = alertsRaw
+                val unread = unreadRaw
+                val delta = deltaRaw
+
                 // Run behavior engine on every data update
                 val enriched = behaviorEngine.analyzeDevices(all, traffic)
                 val enrichedOnline = enriched.filter { it.status == DeviceStatus.ONLINE }
@@ -103,7 +110,7 @@ class DashboardViewModel @Inject constructor(
 
                 val grouped = enriched.groupBy { it.deviceGroup }
 
-                val topDomains = traffic
+                val topDomainsList = traffic
                     .groupBy { it.domain }
                     .entries
                     .sortedByDescending { it.value.size }
@@ -124,7 +131,7 @@ class DashboardViewModel @Inject constructor(
                         newDevicesCount = newDevicesCount,
                         activeCount = activeCount,
                         groupedDevices = grouped,
-                        topDomains = topDomains,
+                        topDomains = topDomainsList,
                         pressureScore = pressure.score,
                         pressureLabel = pressure.label,
                         narrativeReport = inferenceEngine.generateHealthReport(enriched, pressure.score),
