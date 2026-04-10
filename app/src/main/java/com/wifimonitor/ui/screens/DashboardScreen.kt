@@ -346,108 +346,109 @@ private fun NetworkHeroCard(state: com.wifimonitor.viewmodel.DashboardUiState, o
                 )
                 .padding(24.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                // Radar ring
-                Box(modifier = Modifier.size(120.dp)) {
-                    RadarCanvas(
-                        onlineCount = state.onlineDevices.size,
-                        totalCount = state.allDevices.size,
-                        isScanning = state.isScanning,
-                        rotation = radarRotation,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                Spacer(Modifier.width(20.dp))
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        "${state.onlineDevices.size}",
-                        style = MaterialTheme.typography.displayMedium,
-                        color = CyberTeal,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text("devices online", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        "${state.allDevices.size} total known",
-                        style = MaterialTheme.typography.labelSmall, color = TextMuted
-                    )
-
-                    Spacer(Modifier.height(14.dp))
-
-                    if (state.isScanning) {
-                        Column {
-                            LinearProgressIndicator(
-                                progress = { state.scanProgress / 100f },
-                                modifier = Modifier.fillMaxWidth().clip(CircleShape),
-                                color = CyberTeal, trackColor = NavyBorder
-                            )
-                            Spacer(Modifier.height(4.dp))
-                            Text("Scanning… ${state.scanProgress}%", style = MaterialTheme.typography.labelSmall, color = CyberTeal)
-                        }
-                    } else {
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Button(
-                                onClick = onScanClick,
-                                colors = ButtonDefaults.buttonColors(containerColor = CyberTeal),
-                                shape = RoundedCornerShape(10.dp),
-                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Icon(Icons.Default.Search, null, tint = DeepNavy, modifier = Modifier.size(16.dp))
-                                Spacer(Modifier.width(6.dp))
-                                Text("Scan", color = DeepNavy, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
-                            }
-                            
-                            OutlinedButton(
-                                onClick = { navController.navigate(Screen.TacticalMap.route) },
-                                border = BorderStroke(1.dp, CyberTeal),
-                                shape = RoundedCornerShape(10.dp),
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
-                            ) {
-                                Icon(Icons.Default.Radar, null, tint = CyberTeal, modifier = Modifier.size(16.dp))
-                            }
-                        }
-                    }
-                }
-
-                Spacer(Modifier.width(16.dp))
-
-                        HealthScoreRing(
-                            score = state.healthScore,
-                            label = state.healthLabel,
-                            modifier = Modifier.size(80.dp)
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Radar ring
+                    Box(modifier = Modifier.size(120.dp)) {
+                        RadarCanvas(
+                            onlineCount = state.onlineDevices.size,
+                            totalCount = state.allDevices.size,
+                            isScanning = state.isScanning,
+                            rotation = radarRotation,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
-                    
-                    if (!state.isScanning) {
-                        Spacer(Modifier.height(16.dp))
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            TextButton(onClick = { 
-                                viewModel.selectFault(com.wifimonitor.data.NetworkFault(
-                                    id = "network_health_audit",
-                                    type = com.wifimonitor.data.FaultType.CONGESTION,
-                                    title = "Full Network Integrity Audit",
-                                    fact = "Your network scoring ${state.healthScore}% health based on ${state.onlineDevices.size} active nodes.",
-                                    relatedData = listOf(
-                                        com.wifimonitor.data.Metric("Pressure", "${state.pressureScore}%"),
-                                        com.wifimonitor.data.Metric("Managed", state.isManagedMode.toString().uppercase())
-                                    ),
-                                    context = "This audit evaluates encryption standards, latency variances, and potential identity spoofing.",
-                                    actions = listOf(
-                                        com.wifimonitor.data.FaultAction("Start Deep Scan", isPrimary = true),
-                                        com.wifimonitor.data.FaultAction("View Logs")
-                                    ),
-                                    severity = 0
-                                ))
-                            }) {
-                                Icon(Icons.Default.Info, null, tint = CyberTeal, modifier = Modifier.size(16.dp))
-                                Spacer(Modifier.width(6.dp))
-                                Text("Why am I seeing this?", color = CyberTeal, style = MaterialTheme.typography.labelSmall)
+
+                    Spacer(Modifier.width(20.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            "${state.onlineDevices.size}",
+                            style = MaterialTheme.typography.displayMedium,
+                            color = CyberTeal,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text("devices online", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "${state.allDevices.size} total known",
+                            style = MaterialTheme.typography.labelSmall, color = TextMuted
+                        )
+
+                        Spacer(Modifier.height(14.dp))
+
+                        if (state.isScanning) {
+                            Column {
+                                LinearProgressIndicator(
+                                    progress = { state.scanProgress / 100f },
+                                    modifier = Modifier.fillMaxWidth().clip(CircleShape),
+                                    color = CyberTeal, trackColor = NavyBorder
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text("Scanning… ${state.scanProgress}%", style = MaterialTheme.typography.labelSmall, color = CyberTeal)
+                            }
+                        } else {
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Button(
+                                    onClick = onScanClick,
+                                    colors = ButtonDefaults.buttonColors(containerColor = CyberTeal),
+                                    shape = RoundedCornerShape(10.dp),
+                                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Icon(Icons.Default.Search, null, tint = DeepNavy, modifier = Modifier.size(16.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text("Scan", color = DeepNavy, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                                }
+                                
+                                OutlinedButton(
+                                    onClick = { navController.navigate(Screen.TacticalMap.route) },
+                                    border = BorderStroke(1.dp, CyberTeal),
+                                    shape = RoundedCornerShape(10.dp),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+                                ) {
+                                    Icon(Icons.Default.Radar, null, tint = CyberTeal, modifier = Modifier.size(16.dp))
+                                }
                             }
                         }
                     }
+
+                    Spacer(Modifier.width(16.dp))
+
+                    HealthScoreRing(
+                        score = state.healthScore,
+                        label = state.healthLabel,
+                        modifier = Modifier.size(80.dp)
+                    )
+                }
+                
+                if (!state.isScanning) {
+                    Spacer(Modifier.height(16.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        TextButton(onClick = { 
+                            viewModel.selectFault(com.wifimonitor.data.NetworkFault(
+                                id = "network_health_audit",
+                                type = com.wifimonitor.data.FaultType.CONGESTION,
+                                title = "Full Network Integrity Audit",
+                                fact = "Your network scoring ${state.healthScore}% health based on ${state.onlineDevices.size} active nodes.",
+                                relatedData = listOf(
+                                    com.wifimonitor.data.Metric("Pressure", "${state.pressureScore}%"),
+                                    com.wifimonitor.data.Metric("Managed", state.isManagedMode.toString().uppercase())
+                                ),
+                                context = "This audit evaluates encryption standards, latency variances, and potential identity spoofing.",
+                                actions = listOf(
+                                    com.wifimonitor.data.FaultAction("Start Deep Scan", isPrimary = true),
+                                    com.wifimonitor.data.FaultAction("View Logs")
+                                ),
+                                severity = 0
+                            ))
+                        }) {
+                            Icon(Icons.Default.Info, null, tint = CyberTeal, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(6.dp))
+                            Text("Why am I seeing this?", color = CyberTeal, style = MaterialTheme.typography.labelSmall)
+                        }
+                    }
+                }
             }
         }
     }
